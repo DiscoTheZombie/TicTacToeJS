@@ -1,0 +1,13 @@
+#GameBoard
+{
+  background-color: red;
+  height: 150px;
+  width: 150px;
+}
+
+.Tile
+{
+  background-color: blue;
+  height: 20%;
+  width: 20%;
+}
