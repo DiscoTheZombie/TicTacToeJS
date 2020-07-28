@@ -7,6 +7,7 @@
 
 .Tile
 {
+  margin: 5px;
   background-color: blue;
   height: 20%;
   width: 20%;

@@ -20,13 +20,9 @@ let playerController = (function () {
         },
         // Check if key/tile has been selected before:
         verifySelection: function (selection) {
-
-            console.log(`${tiles[selection]} Current tile value`);
-            console.log(`${users[activePlayer]} active player`)
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
                 switchPlayer();
-                console.log(tiles[selection]);
             }
             else {
                 console.log("WRONG!!!")
@@ -44,10 +40,29 @@ let playerController = (function () {
 
         checkForWinner: function() {
             console.log("Checking for a winner.")
-        },
+            let tileValues = Object.values(tiles);
 
+            if(tileValues[0] === users[activePlayer])
+            {
+                if((tileValues[1] && tileValues[2] === users[activePlayer]) || (tileValues[3] && tileValues[6] === users[activePlayer]))
+                    console.log(`Won from top corner ${users[activePlayer]}`);
+            }
+            else if(tileValues[8] === users[activePlayer])
+            {
+                if((tileValues[7] && tileValues[6] === users[activePlayer]) || (tileValues[5] && tileValues[2] === users[activePlayer]))
+                console.log(`Won from bottom corner ${users[activePlayer]}`);
+            }
+            else if(tileValues[4] == users[activePlayer])
+            {
+                for (let upper = 0, last = 8; upper < 4; upper++, last--) {
+                    if(tileValues[upper] && tileValues[last])
+                        console.log(`${users[activePlayer]} has won`);
+                }
+            }   
+        },
         viewMap: function () {
             console.log(tiles);
+            console.log(Object.values(tiles));
         }
     }
 
@@ -56,9 +71,6 @@ let playerController = (function () {
 
 //  Handle tags & update/retrieve from DOM:
 let UIController = (function () {
-
-
-
     return {
         changeSingleSquare: function () {
         },
@@ -76,9 +88,6 @@ let UIController = (function () {
 
             return player_name;
         },
-
-
-
     };
 
 })();
@@ -107,6 +116,7 @@ let controller = (function (playerC, UIC) {
         console.log('Selected a tile!');
         //   console.log(this.id);
         playerC.verifySelection(this.id);
+        playerC.checkForWinner();
     }
 
     return {
