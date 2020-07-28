@@ -23,11 +23,8 @@ let playerController = (function () {
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
                 switchPlayer();
+                return true;
             }
-            else {
-                console.log("WRONG!!!")
-            }
-            console.log(`${users[activePlayer]} active player end function`)
         },
 
         fillTileMap: function (aTile) {
@@ -45,25 +42,30 @@ let playerController = (function () {
             if(tileValues[0] === users[activePlayer])
             {
                 if((tileValues[1] && tileValues[2] === users[activePlayer]) || (tileValues[3] && tileValues[6] === users[activePlayer]))
-                    console.log(`Won from top corner ${users[activePlayer]}`);
+                    return true;
+             //   statustext = `${users[activePlayer]} has won, Congratulations!`;
             }
             else if(tileValues[8] === users[activePlayer])
             {
                 if((tileValues[7] && tileValues[6] === users[activePlayer]) || (tileValues[5] && tileValues[2] === users[activePlayer]))
-                console.log(`Won from bottom corner ${users[activePlayer]}`);
+                    return true;
+             //       statustext = `${users[activePlayer]} has won, Congratulations!`;
             }
             else if(tileValues[4] == users[activePlayer])
             {
                 for (let upper = 0, last = 8; upper < 4; upper++, last--) {
-                    if(tileValues[upper] && tileValues[last])
-                        console.log(`${users[activePlayer]} has won`);
+                    if(tileValues[upper] && tileValues[last]){
+                        return true;
+                      //  statustext = `${users[activePlayer]} has won, Congratulations!`;
+                    }
                 }
             }   
         },
-        viewMap: function () {
-            console.log(tiles);
-            console.log(Object.values(tiles));
+
+        getCurrPlayer: function () {
+            return users[activePlayer];
         }
+
     }
 
 })();
@@ -71,8 +73,13 @@ let playerController = (function () {
 
 //  Handle tags & update/retrieve from DOM:
 let UIController = (function () {
+    let statustext = "tic Tac Toe";
     return {
-        changeSingleSquare: function () {
+        changeSingleSquare: function (tagID) {
+            let currTile = document.getElementById(tagID);
+            currTile.classList.remove("Tile");
+            currTile.classList.add("Player1");
+            
         },
 
         getTilesDOM: function () {
@@ -88,6 +95,15 @@ let UIController = (function () {
 
             return player_name;
         },
+
+        updateStatusText: function(textValue)
+        {
+            document.getElementById('status').innerHTML = textValue; 
+        },
+
+        getStatusText: function () {
+            return statustext;
+        }
     };
 
 })();
@@ -114,9 +130,19 @@ let controller = (function (playerC, UIC) {
     //  Check status of tile and change if available:
     function handleTileSelection() {
         console.log('Selected a tile!');
-        //   console.log(this.id);
         playerC.verifySelection(this.id);
-        playerC.checkForWinner();
+        setText();
+    }
+    
+    function setText(){
+        if(playerC.checkForWinner() == true)
+        {
+            UIC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
+        }
+        else{
+            console.log("here");
+            UIC.updateStatusText(`${playerC.getCurrPlayer()}`);
+        }
     }
 
     return {
@@ -124,7 +150,7 @@ let controller = (function (playerC, UIC) {
             console.log('Game started.');
             setupPlayers();
             setupEventListeners();
-            playerC.viewMap();
+            setText();
         }
     };
 
