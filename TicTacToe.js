@@ -6,10 +6,6 @@ let playerController = (function () {
     let tiles = {};
     let activePlayer = 0;
 
-    let switchPlayer = function () {
-        activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
-    }
-
     return {
         addUser: function (user) {
             users.push(user);
@@ -22,8 +18,7 @@ let playerController = (function () {
         verifySelection: function (selection) {
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
-                switchPlayer();
-                return true;
+                //switchPlayer();
             }
         },
 
@@ -75,8 +70,8 @@ let playerController = (function () {
 let UIController = (function () {
     let statustext = "tic Tac Toe";
     return {
-        changeSingleSquare: function (tagID) {
-            let currTile = document.getElementById(tagID);
+        changeSingleSquare: function (tag) {
+            let currTile = document.getElementById(tag.id);
             currTile.classList.remove("Tile");
             currTile.classList.add("Player1");
             
@@ -130,7 +125,9 @@ let controller = (function (playerC, UIC) {
     //  Check status of tile and change if available:
     function handleTileSelection() {
         console.log('Selected a tile!');
-        playerC.verifySelection(this.id);
+        playerC.verifySelection(this.id)
+        UIC.changeSingleSquare(this);
+        
         setText();
     }
     
@@ -141,6 +138,7 @@ let controller = (function (playerC, UIC) {
         }
         else{
             console.log("here");
+            playerC.switchPlayer();
             UIC.updateStatusText(`${playerC.getCurrPlayer()}`);
         }
     }
