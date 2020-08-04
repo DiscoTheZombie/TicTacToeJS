@@ -67,8 +67,8 @@ let playerController = (function () {
         },
         // Test function to add players for wheb building testing html:
         testPlayer: function () {
-            users.push("A player");
-            users.push("Another player");
+            users.push("Player One");
+            users.push("Player Two");
         }
 
     }
@@ -157,8 +157,9 @@ let controller = (function (playerC, UIC) {
         init: function () {
             console.log('Game started.');
             //  Comment out 'setupPlayers' for 'playerC.testPlayer'
-            setupPlayers();
-            //playerC.testPlayer();
+            //setupPlayers();
+            playerC.testPlayer();
+            // ----------------------
             setupEventListeners();
             setText();
         }
