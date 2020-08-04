@@ -46,7 +46,7 @@ let playerController = (function () {
                     return true;
              //       statustext = `${users[activePlayer]} has won, Congratulations!`;
             }
-            else if(tileValues[4] == users[activePlayer])
+            else if(tileValues[4] === users[activePlayer])
             {
                 for (let upper = 0, last = 8; upper < 4; upper++, last--) {
                     if(tileValues[upper] && tileValues[last]){
@@ -59,6 +59,16 @@ let playerController = (function () {
 
         getCurrPlayer: function () {
             return users[activePlayer];
+        },
+
+        getTileStyle: function () {
+            let cssPlayerNr = activePlayer + 1;
+            return `Player${cssPlayerNr}`;
+        },
+        // Test function to add players for wheb building testing html:
+        testPlayer: function () {
+            users.push("A player");
+            users.push("Another player");
         }
 
     }
@@ -70,10 +80,10 @@ let playerController = (function () {
 let UIController = (function () {
     let statustext = "tic Tac Toe";
     return {
-        changeSingleSquare: function (tag) {
+        changeSingleSquare: function (tag, cssProfile) {
             let currTile = document.getElementById(tag.id);
             currTile.classList.remove("Tile");
-            currTile.classList.add("Player1");
+            currTile.classList.add(cssProfile);
             
         },
 
@@ -109,6 +119,7 @@ let controller = (function (playerC, UIC) {
 
     let setupEventListeners = function () {
         console.log('Add listener');
+      //  document.getElementById("reset").addEventListener(init);
         //  Attach div id's to click event:
         let myTiles = UIC.getTilesDOM()
         myTiles.forEach(element => {
@@ -126,7 +137,7 @@ let controller = (function (playerC, UIC) {
     function handleTileSelection() {
         console.log('Selected a tile!');
         playerC.verifySelection(this.id)
-        UIC.changeSingleSquare(this);
+        UIC.changeSingleSquare(this, playerC.getTileStyle());
         
         setText();
     }
@@ -137,7 +148,6 @@ let controller = (function (playerC, UIC) {
             UIC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
         }
         else{
-            console.log("here");
             playerC.switchPlayer();
             UIC.updateStatusText(`${playerC.getCurrPlayer()}`);
         }
@@ -146,7 +156,9 @@ let controller = (function (playerC, UIC) {
     return {
         init: function () {
             console.log('Game started.');
+            //  Comment out 'setupPlayers' for 'playerC.testPlayer'
             setupPlayers();
+            //playerC.testPlayer();
             setupEventListeners();
             setText();
         }
