@@ -18,8 +18,9 @@ let playerController = (function () {
         verifySelection: function (selection) {
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
-                //switchPlayer();
+                return true;
             }
+            return false;
         },
 
         fillTileMap: function (aTile) {
@@ -30,31 +31,27 @@ let playerController = (function () {
             activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
         },
 
-        checkForWinner: function() {
+        checkForWinner: function () {
             console.log("Checking for a winner.")
             let tileValues = Object.values(tiles);
 
-            if(tileValues[0] === users[activePlayer])
-            {
-                if((tileValues[1] && tileValues[2] === users[activePlayer]) || (tileValues[3] && tileValues[6] === users[activePlayer]))
+            if (tileValues[0] === users[activePlayer]) {
+                if ((tileValues[1] === users[activePlayer] && tileValues[2] === users[activePlayer]) || (tileValues[3] === users[activePlayer] && tileValues[6] === users[activePlayer])){
                     return true;
-             //   statustext = `${users[activePlayer]} has won, Congratulations!`;
-            }
-            else if(tileValues[8] === users[activePlayer])
-            {
-                if((tileValues[7] && tileValues[6] === users[activePlayer]) || (tileValues[5] && tileValues[2] === users[activePlayer]))
+                }
+            } 
+            if (tileValues[8] === users[activePlayer]) {
+                if ((tileValues[7] === users[activePlayer] && tileValues[6] === users[activePlayer]) || (tileValues[5] === users[activePlayer] && tileValues[2] === users[activePlayer])){
                     return true;
-             //       statustext = `${users[activePlayer]} has won, Congratulations!`;
-            }
-            else if(tileValues[4] === users[activePlayer])
-            {
+                }
+            } else if (tileValues[4] === users[activePlayer]) {
                 for (let upper = 0, last = 8; upper < 4; upper++, last--) {
-                    if(tileValues[upper] && tileValues[last]){
+                    if (tileValues[upper] === users[activePlayer] && tileValues[last] === users[activePlayer]) {
                         return true;
-                      //  statustext = `${users[activePlayer]} has won, Congratulations!`;
                     }
                 }
-            }   
+            }
+            return false;
         },
 
         getCurrPlayer: function () {
@@ -65,7 +62,7 @@ let playerController = (function () {
             let cssPlayerNr = activePlayer + 1;
             return `Player${cssPlayerNr}`;
         },
-        // Test function to add players for wheb building testing html:
+        // Test function to add players for web building testing html:
         testPlayer: function () {
             users.push("Player One");
             users.push("Player Two");
@@ -82,9 +79,10 @@ let UIController = (function () {
     return {
         changeSingleSquare: function (tag, cssProfile) {
             let currTile = document.getElementById(tag.id);
+            currTile.disabled = true;
             currTile.classList.remove("Tile");
             currTile.classList.add(cssProfile);
-            
+
         },
 
         getTilesDOM: function () {
@@ -101,9 +99,8 @@ let UIController = (function () {
             return player_name;
         },
 
-        updateStatusText: function(textValue)
-        {
-            document.getElementById('status').innerHTML = textValue; 
+        updateStatusText: function (textValue) {
+            document.getElementById('status').innerHTML = textValue;
         },
 
         getStatusText: function () {
@@ -119,7 +116,7 @@ let controller = (function (playerC, UIC) {
 
     let setupEventListeners = function () {
         console.log('Add listener');
-      //  document.getElementById("reset").addEventListener(init);
+        //  TODO : Add reset listener.
         //  Attach div id's to click event:
         let myTiles = UIC.getTilesDOM()
         myTiles.forEach(element => {
@@ -136,18 +133,20 @@ let controller = (function (playerC, UIC) {
     //  Check status of tile and change if available:
     function handleTileSelection() {
         console.log('Selected a tile!');
-        playerC.verifySelection(this.id)
-        UIC.changeSingleSquare(this, playerC.getTileStyle());
-        
-        setText();
-    }
-    
-    function setText(){
-        if(playerC.checkForWinner() == true)
-        {
-            UIC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
+        if (playerC.verifySelection(this.id)) {
+
+            document.getElementById(this.id).removeEventListener('click', this.handleTileSelection);
+            UIC.changeSingleSquare(this, playerC.getTileStyle());
+            setText();
         }
-        else{
+        console.log(this.id);
+
+    }
+
+    function setText() {
+        if (playerC.checkForWinner() == true) {
+            UIC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
+        } else {
             playerC.switchPlayer();
             UIC.updateStatusText(`${playerC.getCurrPlayer()}`);
         }
@@ -161,7 +160,7 @@ let controller = (function (playerC, UIC) {
             playerC.testPlayer();
             // ----------------------
             setupEventListeners();
-            setText();
+            UIC.updateStatusText(`${playerC.getCurrPlayer()}`)
         }
     };
 
