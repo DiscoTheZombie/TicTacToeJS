@@ -15,6 +15,23 @@
 
 .frame {}
 
+#status {
+    position: relative;
+    display: inline-block;
+    padding: 15px 25px;
+    border-style: solid;
+    background-color: rgb(94, 190, 110);
+    background-image: linear-gradient(rgb(94, 190, 110), rgb(115, 231, 135));
+    box-shadow: 1px 1px 4px -2px #333;
+    text-shadow: 0px -1px;
+    /* text styles */
+    text-decoration: none;
+    color: #fff;
+    font-size: 1em;
+    font-family: sans-serif;
+    font-weight: 100;
+}
+
 #GameBoard {
     position: relative;
     display: grid;
@@ -31,19 +48,22 @@
     justify-content: center;
     font-weight: bold;
     border-style: solid;
-    transition: background 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .Tile:hover {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-style: solid 3px black;
     background-color: rgb(94, 190, 110);
+    background-image: linear-gradient(to bottom right, rgb(94, 190, 110), rgb(214, 248, 219));
     cursor: pointer;
-    transition: ease-in-out 0.4s;
+    transition: 0.5s ease-out;
 }
 
-.disabled {
-    pointer-events: none;
-    opacity: 0.3;
-}
+
+/*Delete outer lines of Gameboard Grid using id's*/
 
 #A1,
 #A2,
@@ -69,44 +89,118 @@
     border-bottom: none;
 }
 
-.btn-frame {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: crimson;
-    margin: auto;
-    width: 400px;
-}
+
+/*Styling button glass */
 
 .glass {
     position: relative;
-    display: inline-block;
     padding: 15px 25px;
-    border-style: solid;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
     background-color: rgb(94, 190, 110);
     background-image: linear-gradient(rgb(94, 190, 110), rgb(115, 231, 135));
-    border-radius: 50%;
-    box-shadow: 0px 1px 4px -2px #333;
+    box-shadow: 1px 1px 4px -2px #333;
     text-shadow: 0px -1px;
-    /* text styles */
     text-decoration: none;
     color: #fff;
     font-size: 1em;
     font-family: sans-serif;
     font-weight: 100;
+    outline: none;
+}
+
+
+/*Styling button glass-1 */
+
+.glass-1 {
+    background: rgb(94, 190, 110);
+    background: linear-gradient(0deg, rgba(126, 216, 141, 0.685) 0%, rgb(117, 209, 144) 100%);
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    border: none;
+}
+
+
+/*Positioning glass-1 class + span tag in glass*/
+
+.glass-1 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .glass:hover {
     background: linear-gradient(rgb(160, 236, 172), rgb(99, 185, 219));
 }
 
+.glass:before,
 .glass:after {
-    content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    height: 50%;
-    background: linear-gradient(to top left rgba(255, 255, 255, 0.8), rgba(109, 199, 211, 0.877));
+    content: "";
+    right: 0;
+    top: 0;
+    background: rgb(55, 171, 238);
+    transition: all 0.6s ease;
+}
+
+.glass:before {
+    height: 0%;
+    width: 2px;
+}
+
+.glass:after {
+    width: 0%;
+    height: 2px;
+}
+
+.glass:hover {
+    background: rgb(255, 255, 255);
+    box-shadow: none;
+    transition: all 0.6s ease;
+}
+
+.glass:hover:before {
+    height: 100%;
+}
+
+.glass:hover:after {
+    width: 100%;
+}
+
+.glass-1 span:hover {
+    color: rgb(94, 190, 110);
+}
+
+.glass-1 span:before,
+.glass-1 span:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+    background: rgb(82, 204, 184);
+    transition: all 0.3s ease;
+}
+
+.glass-1 span:before {
+    width: 2px;
+    height: 0%;
+}
+
+.glass-1 span:after {
+    width: 0%;
+    height: 2px;
+}
+
+.glass-1 span:hover:before {
+    height: 100%;
+}
+
+.glass-1 span:hover:after {
+    width: 100%;
 }
 
 .Player1 {
@@ -118,7 +212,7 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    background-image: url("https://www.transparentpng.com/thumb/a-to-z-alphabets/tYyXX9-those-alphabets-photos.png");
+    background-image: url("./png\ folder/playerO.png");
     background-repeat: no-repeat;
     background-size: 90px 90px;
 }
@@ -132,7 +226,7 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    background-image: url("https://www.transparentpng.com/thumb/a-to-z-alphabets/QwJYuP-x-alphabets-images-png.png");
+    background-image: url("./png\ folder/playerX.png");
     background-repeat: no-repeat;
     background-size: 90px 90px;
 }

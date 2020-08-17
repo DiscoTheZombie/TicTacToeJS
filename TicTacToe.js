@@ -1,19 +1,27 @@
 'use strict';
 
 //  Track players
-let playerController = (function () {
+let playerController = (function() {
     let users = [];
     let tiles = {};
     let activePlayer = 0;
 
     return {
+<<<<<<< HEAD
+        addUser: function(user) {
+            users.push(user);
+        },
+
+        setTileOccupation: function(myTile, occupyStatus) {
+=======
         addUser: (user) => users.push(user),
 
         setTileOccupation: (myTile, occupyStatus) => {
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
             tiles.set(myTile, occupyStatus);
         },
         // Check if key/tile has been selected before:
-        verifySelection: function (selection) {
+        verifySelection: function(selection) {
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
                 return true;
@@ -21,11 +29,23 @@ let playerController = (function () {
             return false;
         },
 
+<<<<<<< HEAD
+        fillTileCollection: function(aTile) {
+            tiles[aTile] = "None";
+        },
+
+        switchPlayer: function() {
+            activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
+        },
+
+        checkForWinner: function() {
+=======
         fillTileCollection: (aTile) => tiles[aTile] = "None",
 
         switchPlayer: () => activePlayer == 0 ? activePlayer = 1 : activePlayer = 0,
 
         checkForWinner: () => {
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
             console.log("Checking for a winner.")
             let tileValues = Object.values(tiles);
 
@@ -46,11 +66,24 @@ let playerController = (function () {
             return false;
         },
 
+<<<<<<< HEAD
+        getCurrPlayer: function() {
+            return users[activePlayer];
+        },
+
+        getTileStyle: function() {
+            let cssPlayerNr = activePlayer + 1;
+            return `Player${cssPlayerNr}`;
+        },
+        // Test function to add players for web building testing html:
+        testPlayer: function() {
+=======
         getCurrPlayer: () => users[activePlayer],
 
         getTileStyle: () => `Player${(activePlayer + 1)}`,
         // Placeholder function to add players for testing html:
         testPlayer: () => {
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
             users.push("Player One");
             users.push("Player Two");
         }
@@ -60,7 +93,7 @@ let playerController = (function () {
 
 
 //  Handle tags & update/retrieve from DOM:
-let UIController = (function () {
+let UIController = (function() {
     const statustext = "Tic Tac Toe";
     const gameboardParentElement = "div#GameBoard div";
     const defaultTileClass = "Tile";
@@ -68,15 +101,25 @@ let UIController = (function () {
     const textArea = "status";
 
     return {
+<<<<<<< HEAD
+        changeSingleSquare: function(tag, cssProfile) {
+=======
         changeSingleSquare: (tag, cssProfile) => {
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
             let currTile = document.getElementById(tag.id);
             currTile.classList.remove(defaultTileClass);
             currTile.classList.add(cssProfile);
         },
 
+<<<<<<< HEAD
+        getTilesDOM: function() {
+            return [...document.querySelectorAll(gameboardParentElement)];
+        },
+=======
         getTilesDOM: () => [...document.querySelectorAll(gameboardParentElement)],
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
 
-        resetAllSquares: function () {
+        resetAllSquares: function() {
             let allTiles = this.getTilesDOM()
             allTiles.forEach(element => {
                 element.className = defaultTileClass;
@@ -84,7 +127,7 @@ let UIController = (function () {
         },
 
         //  Initial player setup, recursive to account for bad input:
-        playerNames: function (player_nr, msg = "Enter your name") {
+        playerNames: function(player_nr, msg = "Enter your name") {
             let player_name = window.prompt(`${msg} Player${player_nr}`);
 
             if (player_name === null || player_name === "")
@@ -93,6 +136,15 @@ let UIController = (function () {
             return player_name;
         },
 
+<<<<<<< HEAD
+        updateStatusText: function(textValue) {
+            document.getElementById('status').innerHTML = textValue;
+        },
+
+        getStatusText: function() {
+            return statustext;
+        }
+=======
         
         updateStatusText: (textValue) => document.getElementById(textArea).innerHTML = textValue,
         
@@ -100,11 +152,29 @@ let UIController = (function () {
         
         getResetBtn: () => resetButton
         
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
     };
     
 })();
 
 
+<<<<<<< HEAD
+let controller = (function(playerC, UIC) {
+    // Main app controller: 
+    let resetBtn = ".glass";
+    let setupEventListeners = function() {
+            console.log('Add listeners');
+            //  TODO : Add reset listener.
+            document.querySelector(resetBtn).addEventListener('click', resetGame);
+            //  Attach div id's to click event:
+            let myTiles = UIC.getTilesDOM()
+            myTiles.forEach(element => {
+                element.addEventListener('click', handleTileSelection);
+                playerC.fillTileCollection(element.id);
+            });
+        }
+        //  Loop twice for player names:
+=======
 // Main app controller: 
 let controller = (function (playerC, uiC) {
     let myTiles = uiC.getTilesDOM()
@@ -126,6 +196,7 @@ let controller = (function (playerC, uiC) {
         myTiles.forEach( el => el.removeEventListener('click', checkAndChangeTile))
     }
 
+>>>>>>> 71ee3f4a7de57e006c0bef982bba57f5f5ce6063
     function setupPlayers() {
         // Comment 'playerC.testPlayer' out and uncomment for loop for non test players.
         //playerC.testPlayer();
@@ -163,7 +234,7 @@ let controller = (function (playerC, uiC) {
     }
 
     return {
-        init: function () {
+        init: function() {
             console.log('Init TicTacToe.js');
             setupEventListeners();
             setupPlayers();
