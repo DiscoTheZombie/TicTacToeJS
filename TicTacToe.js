@@ -79,7 +79,6 @@ let UIController = (function () {
     return {
         changeSingleSquare: function (tag, cssProfile) {
             let currTile = document.getElementById(tag.id);
-            currTile.disabled = true;
             currTile.classList.remove("Tile");
             currTile.classList.add(cssProfile);
 
@@ -137,19 +136,29 @@ let controller = (function (playerC, UIC) {
 
             document.getElementById(this.id).removeEventListener('click', this.handleTileSelection);
             UIC.changeSingleSquare(this, playerC.getTileStyle());
-            setText();
+            setPlayer();
         }
         console.log(this.id);
 
     }
 
-    function setText() {
+    function setPlayer() {
         if (playerC.checkForWinner() == true) {
             UIC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
         } else {
             playerC.switchPlayer();
             UIC.updateStatusText(`${playerC.getCurrPlayer()}`);
         }
+    }
+
+    function resetGame(){
+        console.log('Clean start of game.')
+        //  Comment out 'setupPlayers' for 'playerC.testPlayer'
+        //setupPlayers();
+        playerC.testPlayer();
+        //  Add event listeners.
+        setupEventListeners();
+        UIC.updateStatusText(`${playerC.getCurrPlayer()}`)
     }
 
     return {
