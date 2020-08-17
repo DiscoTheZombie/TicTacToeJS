@@ -88,45 +88,51 @@ let UIController = (function () {
             let player_name = window.prompt(`${msg} Player${player_nr}`);
 
             if (player_name === null || player_name === "")
-                this.playerNames(player_name, player_nr, "Please enter a valid name");
+                this.playerNames(player_nr, "Please enter a valid name");
 
             return player_name;
         },
 
+        
         updateStatusText: (textValue) => document.getElementById(textArea).innerHTML = textValue,
-
+        
         getStatusText: () => statustext,
-
+        
         getResetBtn: () => resetButton
-
+        
     };
-
+    
 })();
 
 
 // Main app controller: 
 let controller = (function (playerC, uiC) {
-    let setupEventListeners = function () {
-        let resetBtn = uiC.getResetBtn();
-        let myTiles = uiC.getTilesDOM()
-        console.log('Adding event listeners');
+    let myTiles = uiC.getTilesDOM()
+    let resetBtn = uiC.getResetBtn();
 
+    let setupEventListeners = function () {
+        console.log('Adding event listeners');
+        
         document.addEventListener("DOMContentLoaded", setupPlayers);
         document.querySelector(resetBtn).addEventListener('click', resetGame);
-
+        
         myTiles.forEach(element => {
             element.addEventListener('click', checkAndChangeTile);
             playerC.fillTileCollection(element.id);
         });
     }
 
+    function disableGame () { 
+        myTiles.forEach( el => el.removeEventListener('click', checkAndChangeTile))
+    }
+
     function setupPlayers() {
         // Comment 'playerC.testPlayer' out and uncomment for loop for non test players.
-        playerC.testPlayer();
+        //playerC.testPlayer();
 
-        // for (let i = 0; i < 2; i++) {
-        //     playerController.addUser(uiC.playerNames(i + 1));
-        // }
+         for (let i = 0; i < 2; i++) {
+             playerController.addUser(uiC.playerNames(i + 1));
+         }
     }
 
     function checkAndChangeTile() {
@@ -140,6 +146,7 @@ let controller = (function (playerC, uiC) {
 
     function setPlayerSwap() {
         if (playerC.checkForWinner()) {
+            disableGame();
             uiC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
         } else {
             playerC.switchPlayer();
