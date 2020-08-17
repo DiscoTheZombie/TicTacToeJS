@@ -1,21 +1,21 @@
 'use strict';
 
 //  Track players
-let playerController = (function () {
+let playerController = (function() {
     let users = [];
     let tiles = {};
     let activePlayer = 0;
 
     return {
-        addUser: function (user) {
+        addUser: function(user) {
             users.push(user);
         },
 
-        setTileOccupation: function (myTile, occupyStatus) {
+        setTileOccupation: function(myTile, occupyStatus) {
             tiles.set(myTile, occupyStatus);
         },
         // Check if key/tile has been selected before:
-        verifySelection: function (selection) {
+        verifySelection: function(selection) {
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
                 return true;
@@ -23,15 +23,15 @@ let playerController = (function () {
             return false;
         },
 
-        fillTileCollection: function (aTile) {
+        fillTileCollection: function(aTile) {
             tiles[aTile] = "None";
         },
 
-        switchPlayer: function () {
+        switchPlayer: function() {
             activePlayer == 0 ? activePlayer = 1 : activePlayer = 0;
         },
 
-        checkForWinner: function () {
+        checkForWinner: function() {
             console.log("Checking for a winner.")
             let tileValues = Object.values(tiles);
 
@@ -55,16 +55,16 @@ let playerController = (function () {
             return false;
         },
 
-        getCurrPlayer: function () {
+        getCurrPlayer: function() {
             return users[activePlayer];
         },
 
-        getTileStyle: function () {
+        getTileStyle: function() {
             let cssPlayerNr = activePlayer + 1;
             return `Player${cssPlayerNr}`;
         },
         // Test function to add players for web building testing html:
-        testPlayer: function () {
+        testPlayer: function() {
             users.push("Player One");
             users.push("Player Two");
         }
@@ -75,23 +75,23 @@ let playerController = (function () {
 
 
 //  Handle tags & update/retrieve from DOM:
-let UIController = (function () {
+let UIController = (function() {
     const statustext = "Tic Tac Toe";
     const gameboardParentElement = "div#GameBoard div";
     const defaultTileClass = "Tile";
 
     return {
-        changeSingleSquare: function (tag, cssProfile) {
+        changeSingleSquare: function(tag, cssProfile) {
             let currTile = document.getElementById(tag.id);
             currTile.classList.remove(defaultTileClass);
             currTile.classList.add(cssProfile);
         },
 
-        getTilesDOM: function () {
+        getTilesDOM: function() {
             return [...document.querySelectorAll(gameboardParentElement)];
         },
 
-        resetAllSquares: function () {
+        resetAllSquares: function() {
             let allTiles = this.getTilesDOM()
             allTiles.forEach(element => {
                 element.className = 'Tile';
@@ -99,7 +99,7 @@ let UIController = (function () {
         },
 
         //  Initial player setup, recursive to account for bad input:
-        playerNames: function (player_nr, msg = "Enter your name") {
+        playerNames: function(player_nr, msg = "Enter your name") {
             let player_name = window.prompt(`${msg} Player${player_nr}`);
 
             if (player_name === null || player_name === "")
@@ -108,11 +108,11 @@ let UIController = (function () {
             return player_name;
         },
 
-        updateStatusText: function (textValue) {
+        updateStatusText: function(textValue) {
             document.getElementById('status').innerHTML = textValue;
         },
 
-        getStatusText: function () {
+        getStatusText: function() {
             return statustext;
         }
     };
@@ -120,21 +120,21 @@ let UIController = (function () {
 })();
 
 
-let controller = (function (playerC, UIC) {
+let controller = (function(playerC, UIC) {
     // Main app controller: 
     let resetBtn = ".glass";
-    let setupEventListeners = function () {
-        console.log('Add listeners');
-        //  TODO : Add reset listener.
-        document.querySelector(resetBtn).addEventListener('click', resetGame);
-        //  Attach div id's to click event:
-        let myTiles = UIC.getTilesDOM()
-        myTiles.forEach(element => {
-            element.addEventListener('click', handleTileSelection);
-            playerC.fillTileCollection(element.id);
-        });
-    }
-    //  Loop twice for player names:
+    let setupEventListeners = function() {
+            console.log('Add listeners');
+            //  TODO : Add reset listener.
+            document.querySelector(resetBtn).addEventListener('click', resetGame);
+            //  Attach div id's to click event:
+            let myTiles = UIC.getTilesDOM()
+            myTiles.forEach(element => {
+                element.addEventListener('click', handleTileSelection);
+                playerC.fillTileCollection(element.id);
+            });
+        }
+        //  Loop twice for player names:
     function setupPlayers() {
         for (let i = 0; i < 2; i++) {
             playerController.addUser(UIC.playerNames(i + 1));
@@ -173,7 +173,7 @@ let controller = (function (playerC, UIC) {
     }
 
     return {
-        init: function () {
+        init: function() {
             console.log('Init TicTacToe.js');
             //  Comment out 'setupPlayers' for 'playerC.testPlayer'
             //setupPlayers();
