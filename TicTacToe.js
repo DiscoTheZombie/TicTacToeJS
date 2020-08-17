@@ -23,7 +23,7 @@ let playerController = (function () {
             return false;
         },
 
-        fillTileMap: function (aTile) {
+        fillTileCollection: function (aTile) {
             tiles[aTile] = "None";
         },
 
@@ -36,12 +36,12 @@ let playerController = (function () {
             let tileValues = Object.values(tiles);
 
             if (tileValues[0] === users[activePlayer]) {
-                if ((tileValues[1] === users[activePlayer] && tileValues[2] === users[activePlayer]) || (tileValues[3] === users[activePlayer] && tileValues[6] === users[activePlayer])){
+                if ((tileValues[1] === users[activePlayer] && tileValues[2] === users[activePlayer]) || (tileValues[3] === users[activePlayer] && tileValues[6] === users[activePlayer])) {
                     return true;
                 }
-            } 
+            }
             if (tileValues[8] === users[activePlayer]) {
-                if ((tileValues[7] === users[activePlayer] && tileValues[6] === users[activePlayer]) || (tileValues[5] === users[activePlayer] && tileValues[2] === users[activePlayer])){
+                if ((tileValues[7] === users[activePlayer] && tileValues[6] === users[activePlayer]) || (tileValues[5] === users[activePlayer] && tileValues[2] === users[activePlayer])) {
                     return true;
                 }
             } else if (tileValues[4] === users[activePlayer]) {
@@ -75,17 +75,26 @@ let playerController = (function () {
 
 //  Handle tags & update/retrieve from DOM:
 let UIController = (function () {
-    let statustext = "tic Tac Toe";
+    const statustext = "Tic Tac Toe";
+    const gameboardParentElement = "div#GameBoard div";
+    const defaultTileClass = "Tile";
+
     return {
         changeSingleSquare: function (tag, cssProfile) {
             let currTile = document.getElementById(tag.id);
-            currTile.classList.remove("Tile");
+            currTile.classList.remove(defaultTileClass);
             currTile.classList.add(cssProfile);
-
         },
 
         getTilesDOM: function () {
-            return [...document.querySelectorAll("div#GameBoard div")];
+            return [...document.querySelectorAll(gameboardParentElement)];
+        },
+
+        resetAllSquares: function () {
+            let allTiles = this.getTilesDOM()
+            allTiles.forEach(element => {
+                element.className = 'Tile';
+            });
         },
 
         //  Initial player setup, recursive to account for bad input:
@@ -114,13 +123,14 @@ let controller = (function (playerC, UIC) {
     // Main app controller: 
 
     let setupEventListeners = function () {
-        console.log('Add listener');
+        console.log('Add listeners');
         //  TODO : Add reset listener.
+        document.querySelector('.btn-frame button.btn').addEventListener('click', resetGame);
         //  Attach div id's to click event:
         let myTiles = UIC.getTilesDOM()
         myTiles.forEach(element => {
             element.addEventListener('click', handleTileSelection);
-            playerC.fillTileMap(element.id);
+            playerC.fillTileCollection(element.id);
         });
     }
     //  Loop twice for player names:
@@ -131,7 +141,6 @@ let controller = (function (playerC, UIC) {
     }
     //  Check status of tile and change if available:
     function handleTileSelection() {
-        console.log('Selected a tile!');
         if (playerC.verifySelection(this.id)) {
 
             document.getElementById(this.id).removeEventListener('click', this.handleTileSelection);
@@ -151,8 +160,9 @@ let controller = (function (playerC, UIC) {
         }
     }
 
-    function resetGame(){
+    function resetGame() {
         console.log('Clean start of game.')
+        UIC.resetAllSquares();
         //  Comment out 'setupPlayers' for 'playerC.testPlayer'
         //setupPlayers();
         playerC.testPlayer();
@@ -163,11 +173,11 @@ let controller = (function (playerC, UIC) {
 
     return {
         init: function () {
-            console.log('Game started.');
+            console.log('Init TicTacToe.js');
             //  Comment out 'setupPlayers' for 'playerC.testPlayer'
             //setupPlayers();
             playerC.testPlayer();
-            // ----------------------
+            //  Add event listeners.
             setupEventListeners();
             UIC.updateStatusText(`${playerC.getCurrPlayer()}`)
         }
