@@ -37,6 +37,7 @@
 .Tile:hover {
     background-color: rgb(94, 190, 110);
     cursor: pointer;
+    transition: ease-in-out 0.4s;
 }
 
 .disabled {
