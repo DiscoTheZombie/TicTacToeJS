@@ -6,14 +6,14 @@
 }
 
 .frame {
+    min-height: 30vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.frame {
-    background-color: cadetblue;
-}
+.frame {}
 
 #GameBoard {
     position: relative;
@@ -35,16 +35,12 @@
 }
 
 .Tile:hover {
-    background: linear-gradient(217deg, rgba(255, 0, 0, .8), rgba(255, 0, 0, 0) 70.71%), linear-gradient(127deg, rgba(0, 255, 0, .8), rgba(0, 255, 0, 0) 70.71%), linear-gradient(336deg, rgba(0, 0, 255, .8), rgba(0, 0, 255, 0) 70.71%);
-    cursor: pointer;
+    background-color: rgb(94, 190, 110);
 }
 
-.dot {
-    height: 25px;
-    width: 25px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
 }
 
 #A1,
@@ -75,45 +71,66 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: crimson;
+    margin: auto;
+    width: 400px;
 }
 
-.btn {
-    border: 0;
-    padding: 30px 15px;
-    width: 200px;
-    background: steelblue;
-    color: white;
+.glass {
+    position: relative;
+    display: inline-block;
+    padding: 15px 25px;
+    border-style: solid;
+    background-color: rgb(94, 190, 110);
+    background-image: linear-gradient(rgb(94, 190, 110), rgb(115, 231, 135));
+    border-radius: 50%;
+    box-shadow: 0px 1px 4px -2px #333;
+    text-shadow: 0px -1px;
+    /* text styles */
+    text-decoration: none;
+    color: #fff;
     font-size: 1em;
-    font-weight: bold;
-    transition: background .3s linear;
-    letter-spacing: 2px;
-    border-radius: 10px;
+    font-family: sans-serif;
+    font-weight: 100;
 }
 
-.shine {
-    top: 0;
-    left: 20px;
-    height: 98px;
-    width: 50px;
-    background: rgba(255, 255, 255, 0.4);
-    transition: all .3s linear;
-    transform: skewX(10deg) translateX(0);
+.glass:hover {
+    background: linear-gradient(rgb(160, 236, 172), rgb(99, 185, 219));
 }
 
-.btn-frame:hover .shine {
-    transform: skewX(20deg) translateX(300px);
+.glass:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 50%;
+    background: linear-gradient(to top left rgba(255, 255, 255, 0.8), rgba(109, 199, 211, 0.877));
 }
 
 .Player1 {
     width: 100px;
     height: 100px;
-    background-color: darkgreen;
     border-style: solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    background-image: url("https://www.transparentpng.com/thumb/a-to-z-alphabets/tYyXX9-those-alphabets-photos.png");
+    background-repeat: no-repeat;
+    background-size: 90px 90px;
 }
 
 .Player2 {
     width: 100px;
     height: 100px;
-    background-color: rgb(199, 118, 231);
     border-style: solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    background-image: url("https://www.transparentpng.com/thumb/a-to-z-alphabets/QwJYuP-x-alphabets-images-png.png");
+    background-repeat: no-repeat;
+    background-size: 90px 90px;
 }
