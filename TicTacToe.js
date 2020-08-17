@@ -121,11 +121,11 @@ let UIController = (function () {
 
 let controller = (function (playerC, UIC) {
     // Main app controller: 
-
+    let resetBtn = ".glass";
     let setupEventListeners = function () {
         console.log('Add listeners');
         //  TODO : Add reset listener.
-        document.querySelector('.btn-frame button.btn').addEventListener('click', resetGame);
+        document.querySelector(resetBtn).addEventListener('click', resetGame);
         //  Attach div id's to click event:
         let myTiles = UIC.getTilesDOM()
         myTiles.forEach(element => {
