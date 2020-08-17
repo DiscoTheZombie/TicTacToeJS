@@ -118,7 +118,7 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    background-image: url("https://www.transparentpng.com/thumb/a-to-z-alphabets/tYyXX9-those-alphabets-photos.png");
+    background-image: url("./png\ folder/playerO.png");
     background-repeat: no-repeat;
     background-size: 90px 90px;
 }
@@ -132,7 +132,7 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    background-image: url("https://www.transparentpng.com/thumb/a-to-z-alphabets/QwJYuP-x-alphabets-images-png.png");
+    background-image: url("./png\ folder/playerX.png");
     background-repeat: no-repeat;
     background-size: 90px 90px;
 }
