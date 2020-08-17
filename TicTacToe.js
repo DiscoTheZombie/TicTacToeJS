@@ -44,7 +44,8 @@ let playerController = (function () {
                 if ((tileValues[7] === users[activePlayer] && tileValues[6] === users[activePlayer]) || (tileValues[5] === users[activePlayer] && tileValues[2] === users[activePlayer])) {
                     return true;
                 }
-            } else if (tileValues[4] === users[activePlayer]) {
+            }
+            if (tileValues[4] === users[activePlayer]) {
                 for (let upper = 0, last = 8; upper < 4; upper++, last--) {
                     if (tileValues[upper] === users[activePlayer] && tileValues[last] === users[activePlayer]) {
                         return true;
