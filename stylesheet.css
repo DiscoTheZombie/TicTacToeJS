@@ -1,15 +1,47 @@
-#GameBoard
-{
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.Tile
-{
+.frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.Player1
-{
+.frame {
+    background-color: cadetblue;
 }
 
-.Player2
-{
+#GameBoard {
+    position: relative;
+    display: grid;
+    width: 300px;
+    height: 300px;
+    grid-template-columns: auto auto auto;
+}
+
+.Tile {
+    width: 55.5px;
+    height: 55.5px;
+    border-style: solid;
+    background-color: brown;
+}
+
+.Tile:hover {
+    background-color: darkgoldenrod;
+}
+
+.Player1 {
+    width: 55.5px;
+    height: 55.5px;
+    background-color: darkgreen;
+}
+
+.Player2 {
+    width: 55.5px;
+    height: 55.5px;
+    background-color: rgb(199, 118, 231);
 }
