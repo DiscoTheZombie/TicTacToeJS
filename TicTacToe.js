@@ -7,11 +7,9 @@ let playerController = (function () {
     let activePlayer = 0;
 
     return {
-        addUser: function (user) {
-            users.push(user);
-        },
+        addUser: (user) => users.push(user),
 
-        setTileOccupation: function (myTile, occupyStatus) {
+        setTileOccupation: (myTile, occupyStatus) => {
             tiles.set(myTile, occupyStatus);
         },
         // Check if key/tile has been selected before:
@@ -27,7 +25,7 @@ let playerController = (function () {
 
         switchPlayer: () => activePlayer == 0 ? activePlayer = 1 : activePlayer = 0,
 
-        checkForWinner: function () {
+        checkForWinner: () => {
             console.log("Checking for a winner.")
             let tileValues = Object.values(tiles);
 
@@ -52,7 +50,7 @@ let playerController = (function () {
 
         getTileStyle: () => `Player${(activePlayer + 1)}`,
         // Placeholder function to add players for testing html:
-        testPlayer: function () {
+        testPlayer: () => {
             users.push("Player One");
             users.push("Player Two");
         }
@@ -67,9 +65,10 @@ let UIController = (function () {
     const gameboardParentElement = "div#GameBoard div";
     const defaultTileClass = "Tile";
     const resetButton = ".glass";
+    const textArea = "status";
 
     return {
-        changeSingleSquare: function (tag, cssProfile) {
+        changeSingleSquare: (tag, cssProfile) => {
             let currTile = document.getElementById(tag.id);
             currTile.classList.remove(defaultTileClass);
             currTile.classList.add(cssProfile);
@@ -94,17 +93,12 @@ let UIController = (function () {
             return player_name;
         },
 
-        updateStatusText: function (textValue) {
-            document.getElementById('status').innerHTML = textValue;
-        },
+        updateStatusText: (textValue) => document.getElementById(textArea).innerHTML = textValue,
 
-        getStatusText: function () {
-            return statustext;
-        },
+        getStatusText: () => statustext,
 
-        getResetBtn(){
-            return resetButton;
-        }
+        getResetBtn: () => resetButton
+
     };
 
 })();
@@ -117,6 +111,7 @@ let controller = (function (playerC, uiC) {
         let myTiles = uiC.getTilesDOM()
         console.log('Adding event listeners');
 
+        document.addEventListener("DOMContentLoaded", setupPlayers);
         document.querySelector(resetBtn).addEventListener('click', resetGame);
 
         myTiles.forEach(element => {
@@ -126,11 +121,14 @@ let controller = (function (playerC, uiC) {
     }
 
     function setupPlayers() {
-        for (let i = 0; i < 2; i++) {
-            playerController.addUser(uiC.playerNames(i + 1));
-        }
+        // Comment 'playerC.testPlayer' out and uncomment for loop for non test players.
+        playerC.testPlayer();
+
+        // for (let i = 0; i < 2; i++) {
+        //     playerController.addUser(uiC.playerNames(i + 1));
+        // }
     }
-    //  Check status of tile and change if available:
+
     function checkAndChangeTile() {
         if (playerC.verifySelection(this.id)) {
 
@@ -152,23 +150,16 @@ let controller = (function (playerC, uiC) {
     function resetGame() {
         console.log('Reset game.')
         uiC.resetAllSquares();
-        //  Comment out 'setupPlayers' for 'playerC.testPlayer'
-        //setupPlayers();
-        playerC.testPlayer();
-        //  Add event listeners.
         setupEventListeners();
+        setupPlayers();
         uiC.updateStatusText(`${playerC.getCurrPlayer()}`)
     }
 
     return {
         init: function () {
             console.log('Init TicTacToe.js');
-            //  Comment out 'setupPlayers' for 'playerC.testPlayer' also needed in 'resetGame' function.
-            //setupPlayers();
-            playerC.testPlayer();
-            //-------------------
-
             setupEventListeners();
+            setupPlayers();
             uiC.updateStatusText(`${playerC.getCurrPlayer()}`)
         }
     };
