@@ -7,7 +7,14 @@ let playerController = (function () {
     let activePlayer = 0;
 
     return {
-        addUser: (user) => { users.push(user) },
+
+        addPlayers: (playersPrompt) => {
+            users = [];
+            for (let i = 0; i < 2; i++) {
+                var a = playersPrompt(i + 1);
+                users.push(a);
+            }
+        },
 
         setTileOccupation: (myTile, occupyStatus) => {
             tiles.set(myTile, occupyStatus);
@@ -61,7 +68,7 @@ let playerController = (function () {
 
 //  Handle tags & update/retrieve from DOM:
 let UIController = (function () {
-    const statustext = "Tic Tac Toe";
+    const defaultText = "Tic Tac Toe";
     const gameboardParentElement = "div#GameBoard div";
     const defaultTileClass = "Tile";
     const resetButton = ".glass";
@@ -88,20 +95,19 @@ let UIController = (function () {
             let player_name = window.prompt(`${msg} Player${player_nr}`);
 
             if (player_name === null || player_name === "")
-                this.playerNames(player_nr, "Please enter a valid name");
+                playerNames(player_nr, "Please enter a valid name");
 
             return player_name;
         },
 
-        
         updateStatusText: (textValue) => document.getElementById(textArea).innerHTML = textValue,
-        
-        getStatusText: () => statustext,
-        
+
+        getDefaultText: () => defaultText,
+
         getResetBtn: () => resetButton
-        
+
     };
-    
+
 })();
 
 
@@ -112,28 +118,26 @@ let controller = (function (playerC, uiC) {
 
     let setupEventListeners = function () {
         console.log('Adding event listeners');
-        
+
         document.addEventListener("DOMContentLoaded", setupPlayers);
         document.querySelector(resetBtn).addEventListener('click', resetGame);
-        
+
         myTiles.forEach(element => {
             element.addEventListener('click', checkAndChangeTile);
             playerC.fillTileCollection(element.id);
         });
     }
 
-    function disableGame () { 
-        myTiles.forEach( el => el.removeEventListener('click', checkAndChangeTile))
+    function disableGame() {
+        myTiles.forEach(el => el.removeEventListener('click', checkAndChangeTile))
     }
 
     function setupPlayers() {
         // Comment 'playerC.testPlayer' out and uncomment for loop for non test players.
         //playerC.testPlayer();
 
-         for (let i = 0; i < 2; i++) {
-             playerC.addUser(uiC.playerNames(i + 1));
-         }
-         uiC.updateStatusText(`${playerC.getCurrPlayer()}`)
+        playerC.addPlayers(uiC.playerNames);
+        uiC.updateStatusText(`${playerC.getCurrPlayer()}`)
     }
 
     function checkAndChangeTile() {
@@ -145,10 +149,14 @@ let controller = (function (playerC, uiC) {
         }
     }
 
+    function announceWinner() {
+        disableGame();
+        uiC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
+    }
+
     function setPlayerSwap() {
         if (playerC.checkForWinner()) {
-            disableGame();
-            uiC.updateStatusText(`${playerC.getCurrPlayer()} you won congratulations!`);
+            announceWinner();
         } else {
             playerC.switchPlayer();
             uiC.updateStatusText(`${playerC.getCurrPlayer()}`);
@@ -157,17 +165,19 @@ let controller = (function (playerC, uiC) {
 
     function resetGame() {
         console.log('Reset game.')
-        uiC.resetAllSquares();
         setupEventListeners();
-        setupPlayers();
+        uiC.updateStatusText(uiC.getDefaultText);
+        uiC.resetAllSquares();
+        //setupPlayers();
         uiC.updateStatusText(`${playerC.getCurrPlayer()}`)
     }
 
     return {
         init: function () {
             console.log('Init TicTacToe.js');
+            uiC.updateStatusText(uiC.getDefaultText());
             setupEventListeners();
-           // DOM load event triggers initial player setup and text field.
+            // DOM load event triggers initial player setup and text field.
         }
     };
 
