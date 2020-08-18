@@ -102,7 +102,9 @@ let UIController = (function () {
 
         updateStatusText: (textValue) => document.getElementById(textArea).innerHTML = textValue,
 
-        getDefaultText: () => defaultText,
+        getDefaultText:  function() {
+           return defaultText;
+        },
 
         getResetBtn: () => resetButton
 
@@ -166,10 +168,10 @@ let controller = (function (playerC, uiC) {
     function resetGame() {
         console.log('Reset game.')
         setupEventListeners();
-        uiC.updateStatusText(uiC.getDefaultText);
+        uiC.updateStatusText(uiC.getDefaultText());
         uiC.resetAllSquares();
-        //setupPlayers();
-        uiC.updateStatusText(`${playerC.getCurrPlayer()}`)
+        setupPlayers();
+        uiC.updateStatusText(`${playerC.getCurrPlayer().bind(this)}`)
     }
 
     return {
