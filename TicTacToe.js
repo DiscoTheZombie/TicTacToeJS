@@ -1,7 +1,7 @@
 'use strict';
 
 //  Track players
-let playerController = (function () {
+let playerController = (function() {
     let users = [];
     let tiles = {};
     let activePlayer = 0;
@@ -20,7 +20,7 @@ let playerController = (function () {
             tiles.set(myTile, occupyStatus);
         },
         // Check if key/tile has been selected before:
-        verifySelection: function (selection) {
+        verifySelection: function(selection) {
             if (tiles[selection] === "None") {
                 tiles[selection] = users[activePlayer];
                 return true;
@@ -67,7 +67,7 @@ let playerController = (function () {
 
 
 //  Handle tags & update/retrieve from DOM:
-let UIController = (function () {
+let UIController = (function() {
     const defaultText = "Tic Tac Toe";
     const gameboardParentElement = "div#GameBoard div";
     const defaultTileClass = "Tile";
@@ -83,7 +83,7 @@ let UIController = (function () {
 
         getTilesDOM: () => [...document.querySelectorAll(gameboardParentElement)],
 
-        resetAllSquares: function () {
+        resetAllSquares: function() {
             let allTiles = this.getTilesDOM()
             allTiles.forEach(element => {
                 element.className = defaultTileClass;
@@ -91,7 +91,7 @@ let UIController = (function () {
         },
 
         //  Initial player setup, recursive to account for bad input:
-        playerNames: function (player_nr, msg = "Enter your name") {
+        playerNames: function(player_nr, msg = "Enter your name") {
             let player_name = window.prompt(`${msg} Player${player_nr}`);
 
             if (player_name === null || player_name === "")
@@ -102,8 +102,8 @@ let UIController = (function () {
 
         updateStatusText: (textValue) => document.getElementById(textArea).innerHTML = textValue,
 
-        getDefaultText:  function() {
-           return defaultText;
+        getDefaultText: function() {
+            return defaultText;
         },
 
         getResetBtn: () => resetButton
@@ -114,11 +114,11 @@ let UIController = (function () {
 
 
 // Main app controller: 
-let controller = (function (playerC, uiC) {
+let controller = (function(playerC, uiC) {
     let myTiles = uiC.getTilesDOM()
     let resetBtn = uiC.getResetBtn();
 
-    let setupEventListeners = function () {
+    let setupEventListeners = function() {
         console.log('Adding event listeners');
 
         document.addEventListener("DOMContentLoaded", setupPlayers);
@@ -175,7 +175,7 @@ let controller = (function (playerC, uiC) {
     }
 
     return {
-        init: function () {
+        init: function() {
             console.log('Init TicTacToe.js');
             uiC.updateStatusText(uiC.getDefaultText());
             setupEventListeners();
